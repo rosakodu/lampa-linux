@@ -1,0 +1,40 @@
+{
+  "name": "lampa-linux",
+  "version": "1.0.0",
+  "description": "Lampa Client with built-in TorrServer and VP8/Opus WebM Transcoder",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "node scripts/download-torrserver.js",
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "keywords": ["lampa", "appimage", "torrserver", "linux", "electron"],
+  "author": "rosakodu",
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "electron": "^28.2.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.lampa.linux",
+    "productName": "Lampa",
+    "directories": {
+      "output": "dist"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Video",
+      "executableName": "lampa"
+    },
+    "extraResources": [
+      {
+        "from": "bin",
+        "to": "bin"
+      },
+      {
+        "from": "lampa",
+        "to": "lampa"
+      }
+    ]
+  }
+}

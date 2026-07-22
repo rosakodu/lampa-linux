@@ -1,0 +1,6 @@
+/* Minimal stylesheet, custom UI features handled by Decky loader panel */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
