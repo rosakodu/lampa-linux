@@ -18,7 +18,7 @@
 
   // ── Persistent localStorage defaults ──────────────────────────────────────
   // Force player to 'video' (built-in HTML5 player)
-  if (window.localStorage.getItem('lampaelectron_transcode_reset') !== 'v2') {
+  if (window.localStorage.getItem('lampaelectron_transcode_reset') !== 'v3') {
     window.localStorage.setItem('player',         'video');
     window.localStorage.setItem('player_torrent', 'video');
     window.localStorage.setItem('player_iptv',    'video');
@@ -27,8 +27,22 @@
     window.localStorage.setItem('torrserver_url_two',  'http://127.0.0.1:8090');
     window.localStorage.setItem('torrserver_use_link', 'one');
     window.localStorage.setItem('torrserver_gts',      'false');
-    window.localStorage.setItem('lampaelectron_transcode_reset', 'v2');
-    _log('[lampa-electron] localStorage defaults applied (Transcoder mode)');
+    
+    // Default Parser setup
+    if (!window.localStorage.getItem('jackett_url') || window.localStorage.getItem('jackett_url').indexOf('8090') !== -1) {
+      window.localStorage.setItem('jackett_url', 'https://jacred.ru');
+    }
+    window.localStorage.setItem('parser_torrent_type', 'jackett');
+
+    window.localStorage.setItem('lampaelectron_transcode_reset', 'v3');
+    _log('[lampa-electron] localStorage defaults applied (Transcoder mode & JacRed parser)');
+  }
+
+  // Sanity check: If parser URL is mistakenly set to TorrServer (http://127.0.0.1:8090), fix it to JacRed
+  var curJackett = window.localStorage.getItem('jackett_url') || '';
+  if (curJackett.indexOf('8090') !== -1) {
+    window.localStorage.setItem('jackett_url', 'https://jacred.ru');
+    window.localStorage.setItem('parser_torrent_type', 'jackett');
   }
 
   // Always force built-in player
