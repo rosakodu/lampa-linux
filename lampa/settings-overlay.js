@@ -45,6 +45,12 @@
     window.localStorage.setItem('parser_torrent_type', 'jackett');
   }
 
+  // Set default Linux player path (/usr/bin/vlc) and clean any legacy Windows paths
+  var curNwPath = window.localStorage.getItem('player_nw_path') || '';
+  if (!curNwPath || curNwPath.indexOf('C:') !== -1 || curNwPath.indexOf('vlc.exe') !== -1) {
+    window.localStorage.setItem('player_nw_path', '/usr/bin/vlc');
+  }
+
   // Always force built-in player
   window.localStorage.setItem('player',         'video');
   window.localStorage.setItem('player_torrent', 'video');
