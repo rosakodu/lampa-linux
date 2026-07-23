@@ -18,7 +18,7 @@
 
   // ── Persistent localStorage defaults ──────────────────────────────────────
   // Force player to 'video' (built-in HTML5 player)
-  if (window.localStorage.getItem('lampaelectron_transcode_reset') !== 'v3') {
+  if (window.localStorage.getItem('lampaelectron_transcode_reset') !== 'v4') {
     window.localStorage.setItem('player',         'video');
     window.localStorage.setItem('player_torrent', 'video');
     window.localStorage.setItem('player_iptv',    'video');
@@ -29,13 +29,14 @@
     window.localStorage.setItem('torrserver_gts',      'false');
     
     // Default Parser setup
-    if (!window.localStorage.getItem('jackett_url') || window.localStorage.getItem('jackett_url').indexOf('8090') !== -1) {
-      window.localStorage.setItem('jackett_url', 'https://jacred.ru');
-    }
+    window.localStorage.setItem('jackett_url', 'https://jacred.ru');
     window.localStorage.setItem('parser_torrent_type', 'jackett');
 
-    window.localStorage.setItem('lampaelectron_transcode_reset', 'v3');
-    _log('[lampa-electron] localStorage defaults applied (Transcoder mode & JacRed parser)');
+    // Default Player NW Path for Linux
+    window.localStorage.setItem('player_nw_path', '/usr/bin/vlc');
+
+    window.localStorage.setItem('lampaelectron_transcode_reset', 'v4');
+    _log('[lampa-electron] localStorage defaults applied v4');
   }
 
   // Sanity check: If parser URL is mistakenly set to TorrServer (http://127.0.0.1:8090), fix it to JacRed
