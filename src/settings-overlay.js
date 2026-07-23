@@ -18,7 +18,7 @@
 
   // ── Persistent localStorage defaults ──────────────────────────────────────
   // Force player to 'video' (built-in HTML5 player)
-  if (window.localStorage.getItem('lampaelectron_transcode_reset') !== 'v4') {
+  if (window.localStorage.getItem('lampaelectron_transcode_reset') !== 'v5') {
     window.localStorage.setItem('player',         'video');
     window.localStorage.setItem('player_torrent', 'video');
     window.localStorage.setItem('player_iptv',    'video');
@@ -34,9 +34,10 @@
 
     // Default Player NW Path for Linux
     window.localStorage.setItem('player_nw_path', '/usr/bin/vlc');
+    window.localStorage.setItem('player_path', '/usr/bin/vlc');
 
-    window.localStorage.setItem('lampaelectron_transcode_reset', 'v4');
-    _log('[lampa-electron] localStorage defaults applied v4');
+    window.localStorage.setItem('lampaelectron_transcode_reset', 'v5');
+    _log('[lampa-electron] localStorage defaults applied v5');
   }
 
   // Sanity check: If parser URL is mistakenly set to TorrServer (http://127.0.0.1:8090), fix it to JacRed
@@ -46,10 +47,11 @@
     window.localStorage.setItem('parser_torrent_type', 'jackett');
   }
 
-  // Set default Linux player path (/usr/bin/vlc) and clean any legacy Windows paths
+  // Set default Linux player path (/usr/bin/vlc) and clean any legacy Windows paths in localStorage
   var curNwPath = window.localStorage.getItem('player_nw_path') || '';
   if (!curNwPath || curNwPath.indexOf('C:') !== -1 || curNwPath.indexOf('vlc.exe') !== -1) {
     window.localStorage.setItem('player_nw_path', '/usr/bin/vlc');
+    window.localStorage.setItem('player_path', '/usr/bin/vlc');
   }
 
   // Always force built-in player
@@ -63,6 +65,15 @@
       setTimeout(hookPlayer, 300);
       return;
     }
+
+    // Force Lampa.Storage RAM cache to use /usr/bin/vlc
+    try {
+      var nwPath = window.Lampa.Storage.get('player_nw_path');
+      if (!nwPath || nwPath.indexOf('C:') !== -1 || nwPath.indexOf('vlc.exe') !== -1) {
+        window.Lampa.Storage.set('player_nw_path', '/usr/bin/vlc');
+        window.Lampa.Storage.set('player_path', '/usr/bin/vlc');
+      }
+    } catch (e) {}
 
     _log('[lampa-electron] Hooking Lampa.Player.play for built-in WebM Transcoder');
 
