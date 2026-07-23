@@ -1,6 +1,17 @@
 <html lang="en">
 <head>
-  <script>window.localStorage.setItem("platform", "electron");</script>
+  <script>
+  window.localStorage.setItem("platform", "electron");
+  (function() {
+    try {
+      var curNwPath = window.localStorage.getItem('player_nw_path') || '';
+      if (!curNwPath || curNwPath.indexOf('C:') !== -1 || curNwPath.indexOf('vlc.exe') !== -1) {
+        window.localStorage.setItem('player_nw_path', '/usr/bin/vlc');
+        window.localStorage.setItem('player_path', '/usr/bin/vlc');
+      }
+    } catch(e){}
+  })();
+</script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -165,6 +176,6 @@
             loadCurrentLampa()
         }
     </script>
-  <script src="settings-overlay.js?v=13" defer></script>
+  <script src="settings-overlay.js?v=14" defer></script>
 </body>
 </html>
