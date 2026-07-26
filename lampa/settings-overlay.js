@@ -17,13 +17,12 @@
     try {
       var elems = document.querySelectorAll('[data-name="player_nw_path"] .settings-param__value, [data-name="player_path"] .settings-param__value');
       for (var i = 0; i < elems.length; i++) {
-        var txt = elems[i].textContent || '';
-        if (txt.indexOf('C:') !== -1 || txt.indexOf('vlc.exe') !== -1 || txt.indexOf('Program Files') !== -1) {
+        if (elems[i].textContent !== '/usr/bin/vlc') {
           elems[i].textContent = '/usr/bin/vlc';
         }
       }
     } catch (e) {}
-  }, 200);
+  }, 100);
 
   // ── Pre-clean localStorage immediately ────────────────────────────────────
   try {
