@@ -1,6 +1,30 @@
 (function () {
   'use strict';
 
+  // ── Intercept localStorage.setItem ─────────────────────────────────────────
+  try {
+    var _origSetItem = window.localStorage.setItem.bind(window.localStorage);
+    window.localStorage.setItem = function (key, val) {
+      if ((key === 'player_nw_path' || key === 'player_path') && typeof val === 'string' && (val.indexOf('C:') !== -1 || val.indexOf('vlc.exe') !== -1 || val.indexOf('Program Files') !== -1)) {
+        val = '/usr/bin/vlc';
+      }
+      return _origSetItem(key, val);
+    };
+  } catch (e) {}
+
+  // ── DOM Observer to immediately fix any rendered Windows path on screen ────
+  setInterval(function () {
+    try {
+      var elems = document.querySelectorAll('[data-name="player_nw_path"] .settings-param__value, [data-name="player_path"] .settings-param__value');
+      for (var i = 0; i < elems.length; i++) {
+        var txt = elems[i].textContent || '';
+        if (txt.indexOf('C:') !== -1 || txt.indexOf('vlc.exe') !== -1 || txt.indexOf('Program Files') !== -1) {
+          elems[i].textContent = '/usr/bin/vlc';
+        }
+      }
+    } catch (e) {}
+  }, 200);
+
   // ── Pre-clean localStorage immediately ────────────────────────────────────
   try {
     var curNwPath = window.localStorage.getItem('player_nw_path') || '';
